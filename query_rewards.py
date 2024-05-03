@@ -12,12 +12,14 @@ def get_main_js():
 
 def get_rewards():
     js = get_main_js()
+    print(f"wget {js}")
     if js is None:
         return []
 
     res = requests.get(js)
-    regex = r'var\s+OT\s*=\s*([^$]+?),\$T\s*=\s*'
+    regex = r'var\s+OR\s*=\s*([^$]+?),\$R\s*=\s*'
     match = re.search(regex, res.content.decode('utf-8'))
+    print(f"match: {not match is None}")
     if match is None:
         return []
 
@@ -45,7 +47,6 @@ def main():
     for peer in peers:
         if peer in rewards:
             total = total + rewards[peer]
-            print(f"Peer ID: {peer}, 奖励数量: {rewards[peer]}")
 
     print(f"用户数量: {len(rewards)}\n总奖励数量: {total_rewards}\n我的奖励数量: {total}")
 
